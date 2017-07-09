@@ -1,4 +1,5 @@
 node_modules
+dotenv
 public/bundle.js
 public/*bundle*
 *.bundle.js
