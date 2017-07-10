@@ -1,7 +1,6 @@
-import { router } from 'express';
+let router = require("express").Router({ mergeParams: true });
+let todoRouter = require("./todo/router.js");
 
-import todoRouter from './todo/router.js';
+router.use("/todos", todoRouter);
 
-router.use('/todos', todoRouter);
-
-export default todoRouter;
+module.exports = router;

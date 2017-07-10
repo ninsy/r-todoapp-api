@@ -1,53 +1,32 @@
-import dotenv from "dotenv";
-import development from "./dev";
-import production from "./prod";
+require("dotenv").config();
 
-dotenv.config();
-
-const ENVS = {
-  development,
-  production
+const config = {
+  dev: "dev",
+  prod: "prod",
+  port: process.env.PORT || 5000,
+  expireTime: 24 * 60 * 10,
+  secrets: {
+    jwt: process.env.JWT || "secret123"
+  }
 };
 
-let config = ((env = "development") => {
-  let options = ENVS[env.toLowerCase()] || {};
-  {
-    let {
-      port = process.env.PORT || 5000,
-      expireTime = 24 * 60 * 10,
-      databaseName = process.env.DB_NAME,
-      databasePass = process.env.DB_PASS,
-      databaseOptions = {
-        dialect: "mysql",
-        host: process.env.DB_HOST,
-        password: process.env.DB_PASS,
-        user: process.env.DB_USER,
-        logging: options.logging,
-        pool: {
-          max: 10,
-          min: 1,
-          idle: 10000
-        }
-      },
-      secrets = {
-        jwt: process.env.JWT || "secret123"
-      }
-      //transports: [ consoleTransport = 'console'] = [],
-    } = options;
-
-    options = {
-      port,
-      expireTime,
-      secrets,
-      sequelizeOptions: {
-        databaseName,
-        databasePass,
-        databaseOptions
-      }
-    };
+config.env = process.env.NODE_ENV || config.dev;
+config.sequelizeOptions = {
+  databaseName: process.env.DB_NAME,
+  databasePass: process.env.DB_PASS,
+  databaseOptions: {
+    dialect: "mysql",
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASS,
+    user: process.env.DB_USER,
+    logging: console.log,
+    pool: {
+      max: 10,
+      min: 1,
+      idle: 10000
+    }
   }
+};
 
-  return options;
-})(process.env.NODE_ENV);
-
-export default config;
+var envConfig = require("./" + config.env);
+module.exports = Object.assign(config, envConfig);

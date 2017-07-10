@@ -1,4 +1,4 @@
-import service from "./service";
+let service = require("./service");
 
 const ctrl = {
   params(req, res, next, id) {
@@ -19,11 +19,11 @@ const ctrl = {
     res.status(200).json({ todo: req.todo });
   },
   getAll(req, res, next) {
-    return res.status(200).json({ message: "WSZYSTKO GIT" });
+    return res.status(200).json({ message: "WSZYSTKO GIT HEHE" });
   },
-  crate(req, res, next) {
+  create(req, res, next) {
     return service
-      .create(req.todo)
+      .create(req.body)
       .then(todo => {
         return res.status(201).json({ todo });
       })
@@ -33,4 +33,4 @@ const ctrl = {
   erase(req, res, next) {}
 };
 
-export default ctrl;
+module.exports = ctrl;

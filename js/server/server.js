@@ -1,9 +1,11 @@
-import express from "express";
-import path from "path";
-import api from "./api/api";
-import config from "./config/config";
+let express = require("express");
+let path = require("path");
+let api = require("./api/api");
+let config = require("./config/config");
+let middleware = require("./middleware/index");
 
 const app = express();
+middleware(app);
 
 app.use("/api", api);
 app.use((err, req, res, next) => {
@@ -11,4 +13,4 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ err });
 });
 
-export default app;
+module.exports = app;

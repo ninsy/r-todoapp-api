@@ -1,5 +1,5 @@
-import sequelize from "sequelize";
-import Models from "../../models/db";
+let sequelize = require("sequelize");
+let Models = require("../../models/db");
 
 const service = {
   create(todo) {
@@ -49,4 +49,4 @@ const service = {
   }
 };
 
-export default service;
+module.exports = service;

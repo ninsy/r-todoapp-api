@@ -1,23 +1,4 @@
 {
-  "presets": [
-    [
-      "env",
-      {
-        "modules": false
-      }
-    ]
-  ],
-  "plugins": [
-    "babel-plugin-syntax-dynamic-import",
-    "babel-plugin-dynamic-import-webpack",
-    "babel-plugin-transform-class-properties"
-  ],
-  "env": {
-    "server": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    },
-    "development": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    }
-  }
+  "presets": [["env"]],
+  "plugins": ["babel-plugin-transform-class-properties"]
 }
