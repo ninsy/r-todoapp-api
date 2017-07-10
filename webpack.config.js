@@ -1,19 +1,18 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+const webpack = require("webpack");
 
 const config = {
   context: __dirname,
-  entry: [
-    './js/index.js'
-  ],
-  devtool: 'cheap-eval-source-map',
+  target: "node",
+  entry: ["./js/index.js"],
+  devtool: "cheap-eval-source-map",
   output: {
-    path: path.join(__dirname, 'public'),
-    filename: 'bundle.js',
-    publicPath: '/public/'
+    path: path.join(__dirname, "public"),
+    filename: "bundle.js",
+    publicPath: "/public/"
   },
   resolve: {
-    extensions: ['.js', '.json']
+    extensions: [".js", ".json"]
   },
   stats: {
     colors: true,
@@ -24,21 +23,21 @@ const config = {
   module: {
     rules: [
       {
-        enforce: 'pre',
+        enforce: "pre",
         test: /\.js$/,
-        loader: 'eslint-loader',
+        loader: "eslint-loader",
         exclude: /node_modules/
       },
-       {
+      {
         test: /\.js$/,
-        loader: 'babel-loader'
+        loader: "babel-loader"
       }
     ]
   }
 };
 
-if (process.env.NODE_ENV === 'production') {
-  config.entry = './js/index.js';
+if (process.env.NODE_ENV === "production") {
+  config.entry = "./js/index.js";
   config.devtool = false;
   config.plugins = [];
 }

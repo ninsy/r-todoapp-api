@@ -3,3 +3,4 @@ dotenv
 public/bundle.js
 public/*bundle*
 *.bundle.js
+.env
