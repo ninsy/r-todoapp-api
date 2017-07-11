@@ -1,5 +1,4 @@
-let service = require("./service");
-
+const service = require("./service");
 
 function constructResponse(root, children) {
   const response = {
@@ -49,12 +48,33 @@ const ctrl = {
     return service
       .create(req.body)
       .then(todo => {
-        return res.status(201).json({ todo });
+        return res.status(201).json(todo);
       })
       .catch(next);
   },
-  edit(req, res, next) {},
-  erase(req, res, next) {}
+  edit(req, res, next) {
+
+    const updateTodo = req.body;
+    const currentTodo = req.todo;
+    const currentChildrenIds = req.children.map(ch => ch.Todo.id);
+
+    return service
+        .update({currentTodo, updateTodo, currentChildrenIds})
+        .then(todo => {
+          return res.status(200).json(todo);
+        })
+        .catch(next);
+  },
+  erase(req, res, next) {
+
+    const todoToDelete = req.todo;
+    return service
+      .erase({todoToDelete})
+      .then(todo=> {
+          return res.status(200).json(todo);
+      })
+      .catch(next);
+  }
 };
 
 module.exports = ctrl;
