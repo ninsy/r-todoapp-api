@@ -23,9 +23,6 @@ const service = {
   getOne(todoId) {
     const promiseArr = [
       Models.TodoIndex.findAll({
-        where: {
-          parentId: todoId
-        },
         include: [
           {
             model: Models.Todo,
