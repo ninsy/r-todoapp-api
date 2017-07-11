@@ -1,9 +1,9 @@
-let Sequelize = require("sequelize");
-let Models = require("./db");
+let Sequelize = require('sequelize');
+let Models = require('./db');
 
 const TodoIndexModel = function(sequelize) {
   const TodoIndex = sequelize.define(
-    "TodoIndex",
+    'TodoIndex',
     {
       parentId: {
         type: Sequelize.BIGINT,
@@ -19,11 +19,11 @@ const TodoIndexModel = function(sequelize) {
       classMethods: {
         associate: function(Models) {
           TodoIndex.belongsTo(Models.Todo, {
-            foreignKey: "parentId",
+            foreignKey: 'parentId',
             onDelete: 'cascade'
           });
           TodoIndex.belongsTo(Models.Todo, {
-            foreignKey: "childId",
+            foreignKey: 'childId',
             onDelete: 'cascade'
           });
         }

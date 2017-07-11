@@ -4,7 +4,6 @@ const development = {
   sequelizeOptions: {
     logging: console.log
   }
-
 };
 
 module.exports = development;

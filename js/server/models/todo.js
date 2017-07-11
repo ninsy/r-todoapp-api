@@ -1,9 +1,9 @@
-let Sequelize = require("sequelize");
-let Models = require("./db");
+let Sequelize = require('sequelize');
+let Models = require('./db');
 
 const TodoModel = function(sequelize) {
   const Todo = sequelize.define(
-    "Todo",
+    'Todo',
     {
       id: {
         type: Sequelize.BIGINT,
@@ -32,10 +32,10 @@ const TodoModel = function(sequelize) {
       classMethods: {
         associate: function(Models) {
           Todo.hasMany(Models.TodoIndex, {
-            foreignKey: "parentId",
+            foreignKey: 'parentId'
           });
           Todo.hasMany(Models.TodoIndex, {
-            foreignKey: "childId",
+            foreignKey: 'childId'
           });
         }
       }

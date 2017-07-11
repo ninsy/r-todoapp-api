@@ -1,14 +1,14 @@
-const service = require("./service");
+const service = require('./service');
 
 function constructResponse(root, children) {
   const response = {
     root,
-    todo: {},
+    todo: {}
   };
   response.root = root;
   let rootChildren = children.filter(ch => ch.parentId === root.id && !ch.Todo.deleted);
   response.root.dataValues.todos = rootChildren.map(ch => ch.Todo.id);
-  for(let i = 0; i < rootChildren.length; i++) {
+  for (let i = 0; i < rootChildren.length; i++) {
     normalizeTodoSchema(rootChildren[i].Todo, children, response);
   }
   return response;
@@ -18,8 +18,8 @@ function normalizeTodoSchema(currTodo, allChildren, responseObject) {
   responseObject.todo[currTodo.id] = currTodo;
   let currTodoChildren = allChildren.filter(ch => ch.parentId === currTodo.id && !ch.Todo.deleted);
   responseObject.todo[currTodo.id].dataValues.todos = currTodoChildren.map(ch => ch.Todo.id);
-  if(responseObject.todo[currTodo.id].dataValues.todos.length) {
-    for(let i = 0; i < currTodoChildren.length; i++) {
+  if (responseObject.todo[currTodo.id].dataValues.todos.length) {
+    for (let i = 0; i < currTodoChildren.length; i++) {
       normalizeTodoSchema(currTodoChildren[i].Todo, allChildren, responseObject);
     }
   }
@@ -53,26 +53,24 @@ const ctrl = {
       .catch(next);
   },
   edit(req, res, next) {
-
     const updateTodo = req.body;
     const currentTodo = req.todo;
     const currentChildrenIds = req.children.map(ch => ch.Todo.id);
 
     return service
-        .update({currentTodo, updateTodo, currentChildrenIds})
-        .then(todo => {
-          return res.status(200).json(todo);
-        })
-        .catch(next);
+      .update({ currentTodo, updateTodo, currentChildrenIds })
+      .then(todo => {
+        return res.status(200).json(todo);
+      })
+      .catch(next);
   },
   erase(req, res, next) {
-
     const todoToDelete = req.todo;
     const childrenToDelete = req.children.map(ch => ch.Todo.id);
     return service
-      .erase({todoToDelete, childrenToDelete})
-      .then(todo=> {
-          return res.status(200).json(todo);
+      .erase({ todoToDelete, childrenToDelete })
+      .then(todo => {
+        return res.status(200).json(todo);
       })
       .catch(next);
   }

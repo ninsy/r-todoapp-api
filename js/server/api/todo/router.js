@@ -1,10 +1,10 @@
-let router = require("express").Router({ mergeParams: true });
-let ctrl = require("./controller");
+let router = require('express').Router({ mergeParams: true });
+let ctrl = require('./controller');
 
-router.param("id", ctrl.params);
+router.param('id', ctrl.params);
 
-router.route("/").post(ctrl.create);
+router.route('/').post(ctrl.create);
 
-router.route("/:id").get(ctrl.getOne).put(ctrl.edit).delete(ctrl.erase);
+router.route('/:id').get(ctrl.getOne).put(ctrl.edit).delete(ctrl.erase);
 
 module.exports = router;
