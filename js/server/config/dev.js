@@ -1,11 +1,9 @@
 const development = {
-  // logging: true,
-  // port: 9999,
-  // sequelizeOptions: {
-  //   databaseOptions: {
-  //     logging: console.log
-  //   }
-  // }
+  logging: true,
+  port: 9999,
+  sequelizeOptions: {
+    logging: console.log
+  }
 
 };
 

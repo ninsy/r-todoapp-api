@@ -4,10 +4,15 @@ let path = require("path");
 let config = require("../config/config");
 
 let sequelize = new Sequelize(
-  config.sequelizeOptions.databaseName,
-  config.sequelizeOptions.databaseOptions.user,
-  config.sequelizeOptions.databasePass,
-  config.sequelizeOptions.databaseOptions
+  config.sequelizeOptions.name,
+  config.sequelizeOptions.user,
+  config.sequelizeOptions.pass,
+  {
+    dialect: config.sequelizeOptions.dialect,
+    host: config.sequelizeOptions.host,
+    pool: config.sequelizeOptions.pool,
+    logging: config.sequelizeOptions.logging,
+  }
 );
 
 let db = {};
