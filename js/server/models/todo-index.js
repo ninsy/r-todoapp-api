@@ -19,10 +19,12 @@ const TodoIndexModel = function(sequelize) {
       classMethods: {
         associate: function(Models) {
           TodoIndex.belongsTo(Models.Todo, {
-            foreignKey: "parentId"
+            foreignKey: "parentId",
+            onDelete: 'cascade'
           });
           TodoIndex.belongsTo(Models.Todo, {
-            foreignKey: "childId"
+            foreignKey: "childId",
+            onDelete: 'cascade'
           });
         }
       }

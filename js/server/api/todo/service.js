@@ -20,7 +20,7 @@ const service = {
         return Models.Todo.create(todo).then(fresh => {
           return addIndexes(parent.id, fresh.id)
             .then(_ => {
-              return todo;
+              return fresh;
             });
         });
       });
@@ -52,38 +52,30 @@ const service = {
       ]
     });
   },
-  update({currentTodo, updateTodo, currentChildrenIds}) {
-    //const toRemove = difference(currentChildrenIds, updateTodo.todos);
-    //const toAdd = difference(updateTodo.todos, currentChildrenIds);
+  update({currentTodo, updateTodo}) {
     const finalTodo = Object.assign(currentTodo, updateTodo);
-
-    // let promiseArr = [
-    //   Models.Todo.upsert(finalTodo),
-    //   addIndexes(finalTodo.id, ...toAdd),
-    //   removeIndexes(finalTodo.id, ...toRemove)
-    // ];
-
-    // fetch all children, make mapping
-
-    return finalTodo.update();
+    return finalTodo.save();
   },
-  erase({todoToDelete}) {
+  erase({todoToDelete, childrenToDelete}) {
     let promiseArr = [
-      todoToDelete.destroy(),
+      Models.Todo.update({deleted: true}, {
+        where: {
+          id: { $in: [...childrenToDelete, todoToDelete.id]}
+        }
+      }),
       Models.TodoIndex.destroy({
         where: {
           $or: [
-            { childId: todoToDelete.id },
-            { parentId: todoToDelete.id }
+            { childId: { $in: [...childrenToDelete, todoToDelete.id ]} },
           ]
         }
       })
     ];
     return Promise.all(promiseArr)
-      .then(values => {
-          values[0].dataValues.todos = values[1].filter(x => x.childId !== todoToDelete.id).map(x => x.childId)
+      .then(_ => {
           return {
-            todo: values[0]
+            todo: todoToDelete,
+            erasedTodo: childrenToDelete
           }
       });
   },

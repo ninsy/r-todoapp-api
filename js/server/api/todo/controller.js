@@ -6,7 +6,7 @@ function constructResponse(root, children) {
     todo: {},
   };
   response.root = root;
-  let rootChildren = children.filter(ch => ch.parentId === root.id);
+  let rootChildren = children.filter(ch => ch.parentId === root.id && !ch.Todo.deleted);
   response.root.dataValues.todos = rootChildren.map(ch => ch.Todo.id);
   for(let i = 0; i < rootChildren.length; i++) {
     normalizeTodoSchema(rootChildren[i].Todo, children, response);
@@ -16,7 +16,7 @@ function constructResponse(root, children) {
 
 function normalizeTodoSchema(currTodo, allChildren, responseObject) {
   responseObject.todo[currTodo.id] = currTodo;
-  let currTodoChildren = allChildren.filter(ch => ch.parentId === currTodo.id);
+  let currTodoChildren = allChildren.filter(ch => ch.parentId === currTodo.id && !ch.Todo.deleted);
   responseObject.todo[currTodo.id].dataValues.todos = currTodoChildren.map(ch => ch.Todo.id);
   if(responseObject.todo[currTodo.id].dataValues.todos.length) {
     for(let i = 0; i < currTodoChildren.length; i++) {
@@ -29,7 +29,7 @@ const ctrl = {
   params(req, res, next, id) {
     id = parseInt(id);
     service.getOne(id).then(([children, currRoot]) => {
-      if (!currRoot) {
+      if (!currRoot || currRoot.deleted) {
         return next({
           status: 404,
           message: `Todo with id [${id}] doesn't exist.`
@@ -68,8 +68,9 @@ const ctrl = {
   erase(req, res, next) {
 
     const todoToDelete = req.todo;
+    const childrenToDelete = req.children.map(ch => ch.Todo.id);
     return service
-      .erase({todoToDelete})
+      .erase({todoToDelete, childrenToDelete})
       .then(todo=> {
           return res.status(200).json(todo);
       })

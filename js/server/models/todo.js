@@ -21,24 +21,21 @@ const TodoModel = function(sequelize) {
       },
       finished: {
         type: Sequelize.BOOLEAN,
-        default: false
+        defaultValue: false
       },
       deleted: {
         type: Sequelize.BOOLEAN,
-        default: false
+        defaultValue: false
       }
     },
     {
       classMethods: {
         associate: function(Models) {
           Todo.hasMany(Models.TodoIndex, {
-            as: "parent",
-            foreignKey: "parentId"
+            foreignKey: "parentId",
           });
           Todo.hasMany(Models.TodoIndex, {
-            as: "child",
             foreignKey: "childId",
-            onDelete: "cascade"
           });
         }
       }
